@@ -1,0 +1,42 @@
+#numpy数组操作，对矩阵进行操作可改变图像像素，图像变成反色
+import cv2 as cv
+import numpy as np
+
+
+def access_pixles(image):
+    print(image.shape)
+    height = image.shape[0]
+    width = image.shape[1]
+    channel = image.shape[2]
+    print("width : %s, height : %s, channel : %s" % (width, height, channel))      #%间隔输出变量
+    for row in range(height): # 从0到height的范围宽度,遍历每个像素
+        for col in range(width):
+            for c in range(channel):
+                pv = image[row, col, c] # 获得行、列和维度
+                image[row, col, c] = 255 - pv # 图像反色，用image=255-image更快
+    cv.imshow("pixles_demo", image)
+
+
+def create_image(): #初始化数组
+    """创建三维数组，0维为B，1维为G，2维为R"""
+    img = np.zeros([400, 400, 3], np.uint8) #创建三维通道，八位400*400的黑色画布，zeros全为0
+    img[:, :, 0] = np.ones([400, 400]) * 255 #ones是把第一通道数组全为1，0第一通道全为蓝，生成蓝色画布，可以直接 img[:, :, 0] = 255
+    cv.imshow("new_image", img)
+
+
+def inverse(image):
+    dst = cv.bitwise_not(image)  # 按位取反，白变黑，黑变白，效果和access_pixles(image)解释执行一样，bitwis_not直接调api更快
+    cv.imshow("inverse_demo",dst)
+
+src = cv.imread("lena.jpg")
+cv.namedWindow("input image", cv.WINDOW_NORMAL)
+cv.imshow("input image", src)
+t1 = cv.getTickCount() #时钟圈数
+create_image()
+inverse(src)
+access_pixles(src) # 调用access_pixles(image)函数
+t2 = cv.getTickCount() 
+time = (t2 - t1)*1000/cv.getTickFrequency() #getTickFrequency每秒走的圈数
+print("time: %s ms" % time)     #%输出运行的时间，评估速度，要不要继续优化
+cv.waitKey(0)
+cv.destroyAllWindows()

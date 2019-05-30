@@ -1,0 +1,69 @@
+﻿#灰度直方图
+
+import cv2 as cv
+import numpy as np
+from matplotlib import pyplot as plt
+
+def histogram_gray(img):
+    plt.hist(img.ravel(),256,[0,256])
+    plt.show()
+
+
+src = cv.imread("weld.png")
+cv.namedWindow('weld',cv.WINDOW_NORMAL)
+cv.imshow("weld", src)
+histogram_gray(src)
+cv.waitKey(0)
+cv.destroyAllWindows()
+
+
+#bgr直方图
+
+
+import cv2 as cv
+from matplotlib import pyplot as plt
+ 
+ 
+def hist_image(image):#画出图像的直方图
+    color = ("blue", "green", "red")
+    for i, color in enumerate(color):
+        hist = cv.calcHist([image], [i], None, [256], [0, 256])
+        plt.plot(hist, color=color)
+        plt.xlim([0, 256])
+    plt.show()
+ 
+src = cv.imread("C://1.jpg")
+cv.namedWindow("原来", cv.WINDOW_NORMAL)
+cv.imshow("原来", src)
+hist_image(src)
+cv.waitKey(0)
+cv.destroyAllWindows()
+
+
+#直方图均衡化
+
+import cv2 as cv
+import numpy as np
+
+def equalHist_image(image):
+    gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+    #cv.imshow("原来", gray)#因为只能处理灰度图像，所以输出原图的灰度图像用于对比
+    dst = cv.equalizeHist(gray)#默认均衡化
+    cv.imshow("defult", dst)
+
+
+#对比度限制（自定义提示参数）
+def clahe_image(image):
+    gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+    clahe = cv.createCLAHE(clipLimit=2.0, tileGridSize=(4, 4))#clipLimit是对比度的大小，tileGridSize是每次处理块的大小
+    dst = clahe.apply(gray)
+    cv.imshow("customize", dst)
+
+
+src = cv.imread("weld.png")
+cv.namedWindow('weld',cv.WINDOW_NORMAL)
+cv.imshow("weld", src)
+equalHist_image(src)
+clahe_image(src)
+cv.waitKey(0)
+cv.destroyAllWindows()

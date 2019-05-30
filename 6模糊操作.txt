@@ -1,0 +1,40 @@
+﻿import cv2 as cv
+import numpy as np
+
+
+
+def mo_image(src1):
+    src2 = cv.blur(src1, (5,5))
+    cv.namedWindow('blur',0)
+    cv.imshow("blur", src2)
+    src2 = cv.medianBlur(src1, 5)
+    cv.namedWindow('medianblur',0)
+    #cv.imwrite('m1.jpg',src2)
+    cv.imshow("medianblur", src2)
+    src2 = cv.GaussianBlur(src1, (0,0), 15)#2是标准差，可有前面自动算出来
+    cv.namedWindow('gaussianblur',0)
+    cv.imshow("gaussianblur", src2)
+    src2 = cv.bilateralFilter(src1, 0, 80, 15)
+    cv.namedWindow('bilateralFilter',0)
+    cv.imshow("bilateralFilter", src2)
+    cv.pyrMeanShiftFiltering()
+
+
+def zi_image(src1):
+    kernel1 = np.ones((5, 5), np.float)/25#自定义矩阵，最多是25个255相加，所以除25防止数值溢出
+    src2 = cv.filter2D(src1, -1, kernel1)
+    #输入值为-1时，目标图像和原图像深度保持一致，kernel1若为kernel，此处应写成kernel=kernel
+    #kernel2 = np.array([[1,1,1], [1,1,1], [1,1,1]], np.float32)/9 这也是均值模糊
+    cv.imshow("mblur", src2)#自定义均值模糊
+    kernel2 = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]], np.float32)
+    src2 = cv.filter2D(src1, -1, kernel2)
+    cv.imshow("sharp", src2)#自定义锐化
+
+
+src = cv.imread("weld.png")
+mo_image(src)
+#zi_image(src)
+cv.namedWindow('weld',cv.WINDOW_NORMAL)
+cv.imshow("weld", src)
+cv.waitKey(0)
+cv.destroyAllWindows()

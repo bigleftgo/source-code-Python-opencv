@@ -1,0 +1,45 @@
+﻿# 数值运算：加减乘除，图片组合
+import cv2 as cv
+
+
+def shu_image(m1, m2):
+    src = cv.add(m1, m2)#加
+    cv.imshow("add", src)
+    src = cv.subtract(m1, m2)#减
+    cv.imshow("subtract", src)
+    src = cv.divide(m1, m2)#除
+    cv.imshow("divide", src)
+    src = cv.multiply(m1, m2)#乘
+    cv.imshow("multiply", src)
+
+
+
+
+src1 = cv.imread("LinuxLogo.jpg")
+src2 = cv.imread("WindowsLogo.jpg")
+cv.imshow("image1", src1)
+cv.imshow("image2", src2)
+print(src1.shape)
+#shu_image(src1, src2)
+cv.waitKey(0)
+cv.destroyAllWindows()
+
+
+# 粗略提升对比度和亮度
+import cv2 as cv
+import numpy as np
+ 
+ 
+def contrast_brightness_image(src1, a, g):
+    h, w, ch = src1.shape#获取shape的数值，height和width、通道
+ 
+    #新建全零图片数组src2,输出和原图数据类型相同全黑图片，然后两个图片合成调整亮度和对比度
+    src2 = np.zeros([h, w, ch], src1.dtype)
+    dst = cv.addWeighted(src1, a, src2, 1-a, g)#addWeighted函数说明如下
+    cv.imshow("con-bri-demo", dst)
+ 
+src = cv.imread("C://1.jpg")
+cv.namedWindow("原来", cv.WINDOW_NORMAL)
+cv.imshow("原来", src)
+contrast_brightness_image(src, 1.2, 10)#第一个1.2为对比度  第二个为亮度数值越大越亮
+cv.waitKey(0)

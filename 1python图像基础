@@ -1,0 +1,61 @@
+###加载图像
+import numpy as np
+import cv2 as cv
+
+
+print ('----------------Hello Python----------------')
+img = cv.imread('lena.jpg')
+cv.nameWindow('input image',cv.WINDOW_AUTOSIZE)
+cv.imshow('input image',img)
+k = cv.waitKey(0)
+if k == 27:         # wait for ESC key to exit
+    cv2.destroyAllWindows()
+elif k == ord('s'): # wait for 's' key to save and exit
+    cv2.imwrite('lenagray.png',img)
+    cv2.destroyAllWindows()
+
+
+###图片属性
+import cv2 as cv
+
+
+def get_image_info(image):
+    print(type(image))
+    print(image.shape)
+    print(image.size)
+    print(image.size)
+
+
+print ('----------------Hello Python----------------')
+img = cv.imread('lena.jpg')
+cv.nameWindow('input image',cv.WINDOW_AUTOSIZE)
+cv.imshow('input image',img)
+get_image_info(img)#调用函数
+k = cv.waitKey(0)
+if k == 27:         # wait for ESC key to exit
+    cv2.destroyAllWindows()
+elif k == ord('s'): # wait for 's' key to save and exit
+    cv2.imwrite('lenagray.png',img)
+    cv2.destroyAllWindows()
+
+
+###摄像头捕获彩色视频
+import numpy as np
+import cv2 as cv
+
+
+def video_demo():
+    cap = cv.VideoCapture(0)
+    while (True):
+        ret, frame = cap.read()
+        frame = cv.flip(frame, 1)  # 摄像头左右翻转
+        cv.imshow('video', frame)
+        if cv.waitKey(1) & 0xFF == 27: #必须有，要不然不显示视频
+            break
+
+
+video_demo()
+# 关闭所有窗口，加cv.waitKey(0)可以在esc键后再点叉退出
+cap.release()
+cv2.destroyAllWindows()
+

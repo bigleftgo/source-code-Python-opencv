@@ -40,9 +40,33 @@ def threshold_image(image):
     cv.imshow("cut2", binary)
 
 
+#局部阈值
+def local_image(image):
+    gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+    binary1 = cv.adaptiveThreshold(gray, 255, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY, 25, 10)
+    #均值处理，25必须为奇数；10为常量，像素值减去均值大于10为白色
+    cv.imshow("part1", binary1)
+    binary2 = cv.adaptiveThreshold(gray, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 25, 10)
+    #高斯处理
+    cv.imshow("part2", binary2)
+
+
+#求出图像均值作为阈值来二值化
+def custom_image(image):
+    gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+    h, w = gray.shape[:2]#高宽
+    m = np.reshape(gray, [1, w*h])#化为一维数组
+    mean = m.sum() / (w*h)
+    print("mean: ", mean)
+    ret, binary = cv.threshold(gray, mean, 255, cv.THRESH_BINARY)
+    cv.imshow("mean", binary)
+
+
 src = cv.imread("weld.png")
 cv.namedWindow('input image',cv.WINDOW_NORMAL)
 cv.imshow("input image", src)
 threshold_image(src)
+local_image(src)
+custom_image(src)
 cv.waitKey(0)
 cv.destroyAllWindows()

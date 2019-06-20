@@ -69,12 +69,12 @@ def tophat_morphology_demo(image): #顶帽操作
     cv.imshow("top_hat_demo", dst)
 
 
-def blackHat_morphology_demo(image): #顶帽操作
+def blackHat_morphology_demo(image): #黑帽操作
     gray=cv.cvtColor(image,cv.COLOR_BGR2GRAY)
     kernel = cv.getStructuringElement(cv.MORPH_RECT, (5, 5))
     dst = cv.morphologyEx(gray, cv.MORPH_BLACKHAT, kernel=kernel)
-    cimg = np.array(gray.shape, np.uint8)
-    cimg = 0
+    cimg = np.array(gray.shape, np.uint8)#构造数组
+    cimg = 0#增加亮度
     dst = cv.add(dst, cimg)
     cv.imshow("BLACK_hat_demo", dst)
 
